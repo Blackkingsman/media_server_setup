@@ -97,7 +97,14 @@ def install_pia():
     if is_installed('piactl'):
         print('[INFO] piactl installed')
         return
-    inst = find_local_installer()
+    try:
+        inst = find_local_installer()
+    except SystemExit:
+        print("\n[ERROR] No PIA installer found for your system in this directory.")
+        print("Please download the appropriate installer from:")
+        print("  https://github.com/Blackkingsman/media_server_setup/releases")
+        print("and place it in this directory, then rerun the script.")
+        sys.exit(1)
     print(f"[STEP] Installing PIA via {inst.name}")
     if not (inst.stat().st_mode & stat.S_IXUSR):
         inst.chmod(inst.stat().st_mode | stat.S_IXUSR)
